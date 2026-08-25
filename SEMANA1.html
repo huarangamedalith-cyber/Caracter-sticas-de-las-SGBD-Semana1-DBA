@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Semana 1 | Administración de Base de Datos</title>
+
+<style>
+:root{
+    --bg:#070b17;
+    --card:#111a2d;
+    --card2:#17223b;
+    --blue:#2979ff;
+    --cyan:#00d9ff;
+    --purple:#7c4dff;
+    --pink:#ff3d9a;
+    --green:#00e676;
+    --yellow:#ffd740;
+    --text:#f4f7ff;
+    --muted:#9eabc5;
+    --border:#263452;
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:
+        radial-gradient(circle at 10% 10%,#13265c 0,transparent 30%),
+        radial-gradient(circle at 90% 20%,#30145b 0,transparent 28%),
+        var(--bg);
+    color:var(--text);
+    line-height:1.6;
+}
+
+/* BARRA SUPERIOR */
+nav{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    background:rgba(7,11,23,.90);
+    backdrop-filter:blur(15px);
+    border-bottom:1px solid var(--border);
+    padding:12px 5%;
+}
+
+.nav-content{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+}
+
+.logo{
+    font-weight:bold;
+    color:var(--cyan);
+}
+
+nav a{
+    color:#cbd5ef;
+    text-decoration:none;
+    margin-left:18px;
+    font-size:14px;
+}
+
+nav a:hover{
+    color:var(--cyan);
+}
+
+/* CONTENEDOR */
+.container{
+    width:min(1200px,92%);
+    margin:auto;
+}
+
+/* HERO */
+.hero{
+    margin-top:35px;
+    padding:55px;
+    border:1px solid #35447c;
+    border-radius:25px;
+    background:
+        linear-gradient(135deg,
+        rgba(41,121,255,.22),
+        rgba(124,77,255,.20),
+        rgba(0,217,255,.08));
+    box-shadow:0 25px 80px rgba(0,0,0,.35);
+    position:relative;
+    overflow:hidden;
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    width:300px;
+    height:300px;
+    border-radius:50%;
+    background:#00d9ff;
+    filter:blur(100px);
+    opacity:.12;
+    right:-100px;
+    top:-100px;
+}
+
+.badge{
+    display:inline-block;
+    padding:9px 18px;
+    border-radius:30px;
+    background:linear-gradient(90deg,var(--blue),var(--cyan));
+    font-weight:bold;
+    font-size:14px;
+}
+
+h1{
+    font-size:clamp(35px,5vw,62px);
+    margin:20px 0 10px;
+    line-height:1.1;
+}
+
+.gradient{
+    background:linear-gradient(90deg,#fff,var(--cyan),#8e7dff);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.subtitle{
+    color:#c5cee2;
+    font-size:19px;
+}
+
+/* DATOS */
+.info{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    margin:25px 0;
+}
+
+.info-card{
+    background:rgba(17,26,45,.9);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:25px;
+}
+
+.info-card h3{
+    color:var(--cyan);
+    margin-bottom:8px;
+}
+
+.student{
+    color:#fff;
+    font-size:18px;
+}
+
+/* LOGRO */
+.logro{
+    margin:25px 0;
+    padding:25px;
+    border-left:5px solid var(--pink);
+    border-radius:15px;
+    background:linear-gradient(90deg,
+        rgba(255,61,154,.13),
+        rgba(17,26,45,.8));
+}
+
+.logro h2{
+    color:#ff75b7;
+    margin-bottom:10px;
+}
+
+/* SECCIONES */
+section{
+    margin:70px 0;
+}
+
+.section-title{
+    font-size:32px;
+    margin-bottom:10px;
+}
+
+.section-title span{
+    color:var(--cyan);
+}
+
+.section-desc{
+    color:var(--muted);
+    margin-bottom:30px;
+}
+
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:linear-gradient(145deg,var(--card),var(--card2));
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:25px;
+    transition:.35s;
+    position:relative;
+    overflow:hidden;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+    border-color:var(--cyan);
+    box-shadow:0 15px 35px rgba(0,217,255,.12);
+}
+
+.icon{
+    font-size:40px;
+    margin-bottom:12px;
+}
+
+.card h3{
+    color:#fff;
+    margin-bottom:10px;
+}
+
+.card p{
+    color:var(--muted);
+}
+
+/* COLORES */
+.blue{color:#4da3ff;}
+.cyan{color:var(--cyan);}
+.green{color:var(--green);}
+.purple{color:#a98bff;}
+.yellow{color:var(--yellow);}
+.pink{color:#ff62ad;}
+
+/* DIAGRAMA */
+.architecture{
+    display:grid;
+    gap:15px;
+    max-width:850px;
+    margin:30px auto;
+}
+
+.layer{
+    padding:25px;
+    border-radius:15px;
+    text-align:center;
+    border:1px solid;
+    transition:.3s;
+}
+
+.layer:hover{
+    transform:scale(1.03);
+}
+
+.external{
+    background:rgba(41,121,255,.12);
+    border-color:#2979ff;
+}
+
+.conceptual{
+    background:rgba(124,77,255,.12);
+    border-color:#7c4dff;
+}
+
+.internal{
+    background:rgba(0,230,118,.10);
+    border-color:#00e676;
+}
+
+.arrow{
+    text-align:center;
+    font-size:28px;
+    color:var(--cyan);
+}
+
+/* TIPOS */
+.type-card{
+    min-height:250px;
+}
+
+.tag{
+    display:inline-block;
+    padding:5px 10px;
+    background:#233252;
+    border-radius:20px;
+    font-size:12px;
+    color:#9bdfff;
+    margin-top:12px;
+}
+
+/* COMPARACIÓN */
+.compare{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--card);
+    border-radius:15px;
+    overflow:hidden;
+}
+
+th,td{
+    padding:15px;
+    border-bottom:1px solid var(--border);
+    text-align:left;
+}
+
+th{
+    background:#1c2945;
+    color:var(--cyan);
+}
+
+td{
+    color:#c7d0e4;
+}
+
+/* TIMELINE */
+.timeline{
+    border-left:3px solid var(--cyan);
+    margin:35px 20px;
+    padding-left:30px;
+}
+
+.event{
+    margin-bottom:35px;
+    position:relative;
+}
+
+.event::before{
+    content:"";
+    position:absolute;
+    left:-42px;
+    top:5px;
+    width:17px;
+    height:17px;
+    background:var(--cyan);
+    border-radius:50%;
+    box-shadow:0 0 15px var(--cyan);
+}
+
+.year{
+    color:var(--yellow);
+    font-weight:bold;
+    font-size:20px;
+}
+
+/* VIDEOS */
+.video-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:25px;
+}
+
+.video{
+    background:var(--card);
+    padding:12px;
+    border-radius:18px;
+    border:1px solid var(--border);
+}
+
+.video iframe{
+    width:100%;
+    aspect-ratio:16/9;
+    border:none;
+    border-radius:12px;
+}
+
+.video h3{
+    padding:15px 5px 5px;
+}
+
+/* ENTORNOS */
+.environment{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:15px;
+}
+
+.environment div{
+    padding:18px 25px;
+    background:#141f36;
+    border:1px solid var(--border);
+    border-radius:15px;
+    transition:.3s;
+}
+
+.environment div:hover{
+    background:#1d2d4d;
+    border-color:var(--cyan);
+    transform:translateY(-5px);
+}
+
+/* EVALUADOR */
+.quiz{
+    background:linear-gradient(135deg,
+        rgba(41,121,255,.15),
+        rgba(124,77,255,.15));
+    padding:30px;
+    border-radius:20px;
+    border:1px solid #384a78;
+}
+
+.question{
+    margin-bottom:25px;
+}
+
+.question button{
+    display:block;
+    width:100%;
+    text-align:left;
+    padding:13px;
+    margin:8px 0;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:#111a2d;
+    color:#dce5fa;
+    cursor:pointer;
+}
+
+.question button:hover{
+    border-color:var(--cyan);
+}
+
+.correct{
+    background:#064d32!important;
+    border-color:#00e676!important;
+}
+
+.wrong{
+    background:#551c2c!important;
+    border-color:#ff4d70!important;
+}
+
+#resultado{
+    font-size:20px;
+    color:var(--cyan);
+    font-weight:bold;
+}
+
+/* FOOTER */
+footer{
+    text-align:center;
+    padding:50px 20px;
+    border-top:1px solid var(--border);
+    color:var(--muted);
+}
+
+footer strong{
+    color:var(--cyan);
+}
+
+/* RESPONSIVE */
+@media(max-width:700px){
+    .hero{
+        padding:30px 22px;
+    }
+
+    .info{
+        grid-template-columns:1fr;
+    }
+
+    nav a{
+        display:none;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+<div class="nav-content">
+<div class="logo">🗄️ BD • SGBD</div>
+
+<div>
+<a href="#caracteristicas">Características</a>
+<a href="#tipos">Tipos</a>
+<a href="#arquitectura">Arquitectura</a>
+<a href="#evolucion">Evolución</a>
+<a href="#videos">Videos</a>
+<a href="#evaluador">Evaluador</a>
+</div>
+</div>
+</nav>
+
+<main class="container">
+
+<!-- HERO -->
+<header class="hero">
+
+<span class="badge">SEMANA 1 · ADMINISTRACIÓN DE BASE DE DATOS</span>
+
+<h1>
+Características y Tipos de
+<span class="gradient">Ambientes de Base de Datos</span>
+</h1>
+
+<p class="subtitle">
+De los fundamentos conceptuales a las tecnologías modernas
+</p>
+
+</header>
+
+<!-- DATOS -->
+<div class="info">
+
+<div class="info-card">
+<h3>👨‍🎓 ESTUDIANTE</h3>
+<p class="student">Mecalith Huaranga</p>
+</div>
+
+<div class="info-card">
+<h3>👨‍🏫 DOCENTE</h3>
+<p class="student">
+Especialista en Tecnología.<br>
+César Augusto Figueroa Condor
+</p>
+</div>
+
+</div>
+
+<!-- LOGRO -->
+<div class="logro">
+
+<h2>🎯 Logro de la sesión</h2>
+
+<p>
+Describe las características de la base de datos y sus sistemas de
+administración mediante la elaboración de un organizador visual
+interactivo, identificando las arquitecturas, tipos y desarrollo
+tecnológico de los sistemas de BD para comprender sus requerimientos
+en entornos de sistemas de información actuales.
+</p>
+
+</div>
+
+
+<!-- 1 CARACTERISTICAS -->
+<section id="caracteristicas">
+
+<h2 class="section-title">
+1. <span>Características de la BD y SGBD</span>
+</h2>
+
+<p class="section-desc">
+Una base de datos organiza información para que pueda ser almacenada,
+consultada, actualizada y protegida de manera eficiente.
+</p>
+
+<div class="grid">
+
+<div class="card">
+<div class="icon">🔐</div>
+<h3>Seguridad</h3>
+<p>
+Controla quién puede acceder, modificar o administrar
+la información mediante usuarios, roles y permisos.
+</p>
+</div>
+
+<div class="card">
+<div class="icon">🛡️</div>
+<h3>Integridad</h3>
+<p>
+Mantiene los datos correctos y coherentes mediante
+restricciones, claves y reglas de validación.
+</p>
+</div>
+
+<div class="card">
+<div class="icon">👥</div>
+<h3>Concurrencia</h3>
+<p>
+Permite que varios usuarios trabajen con los datos
+simultáneamente evitando conflictos.
+</p>
+</div>
+
+<div class="card">
+<div class="icon">💾</div>
+<h3>Persistencia</h3>
+<p>
+Los datos permanecen almacenados y pueden recuperarse
+posteriormente.
+</p>
+</div>
+
+<div class="card">
+<div class="icon">⚡</div>
+<h3>Rendimiento</h3>
+<p>
+Optimiza las consultas y el acceso a grandes cantidades
+de información.
+</p>
+</div>
+
+<div class="card">
+<div class="icon">🔄</div>
+<h3>Recuperación</h3>
+<p>
+Permite realizar copias de seguridad y recuperar la
+información ante fallos.
+</p>
+</div>
+
+</div>
+</section>
+
+
+<!-- 2 TIPOS -->
+<section id="tipos">
+
+<h2 class="section-title">
+2. <span>Tipos de Bases de Datos</span>
+</h2>
+
+<p class="section-desc">
+Los diferentes modelos se utilizan dependiendo de la estructura,
+volumen, velocidad y necesidades de los datos.
+</p>
+
+<div class="grid">
+
+<div class="card type-card">
+<div class="icon">📊</div>
+<h3>Relacionales — SQL</h3>
+
+<p>
+Organizan los datos en tablas formadas por filas y columnas.
+Utilizan relaciones entre tablas mediante claves.
+</p>
+
+<span class="tag">MySQL</span>
+<span class="tag">PostgreSQL</span>
+<span class="tag">Oracle</span>
+<span class="tag">SQL Server</span>
+</div>
+
+<div class="card type-card">
+<div class="icon">📄</div>
+<h3>Documentales — NoSQL</h3>
+
+<p>
+Almacenan información como documentos flexibles,
+generalmente utilizando estructuras como JSON.
+</p>
+
+<span class="tag">MongoDB</span>
+<span class="tag">CouchDB</span>
+</div>
+
+<div class="card type-card">
+<div class="icon">🔑</div>
+<h3>Clave - Valor</h3>
+
+<p>
+Utilizan una clave única asociada a un valor.
+Son útiles cuando se necesitan consultas rápidas.
+</p>
+
+<span class="tag">Redis</span>
+<span class="tag">DynamoDB</span>
+</div>
+
+<div class="card type-card">
+<div class="icon">🕸️</div>
+<h3>Bases de Datos de Grafos</h3>
+
+<p>
+Representan entidades como nodos y sus relaciones
+como conexiones o aristas.
+</p>
+
+<span class="tag">Neo4j</span>
+</div>
+
+</div>
+
+<br>
+
+<div class="compare">
+
+<table>
+
+<tr>
+<th>Característica</th>
+<th>SQL / Relacional</th>
+<th>NoSQL</th>
+</tr>
+
+<tr>
+<td>Estructura</td>
+<td>Tablas, filas y columnas</td>
+<td>Documentos, clave-valor, grafos, etc.</td>
+</tr>
+
+<tr>
+<td>Esquema</td>
+<td>Generalmente definido</td>
+<td>Flexible</td>
+</tr>
+
+<tr>
+<td>Escalabilidad</td>
+<td>Vertical y también horizontal</td>
+<td>Frecuentemente horizontal</td>
+</tr>
+
+<tr>
+<td>Uso frecuente</td>
+<td>Banca, ventas, ERP, facturación</td>
+<td>Big Data, aplicaciones web y tiempo real</td>
+</tr>
+
+</table>
+
+</div>
+
+</section>
+
+
+<!-- 3 ARQUITECTURA -->
+<section id="arquitectura">
+
+<h2 class="section-title">
+3. <span>Arquitectura de una Base de Datos</span>
+</h2>
+
+<p class="section-desc">
+La arquitectura de tres niveles ayuda a separar la forma en que
+los usuarios ven los datos de la forma en que realmente se almacenan.
+</p>
+
+<div class="architecture">
+
+<div class="layer external">
+<h3>👤 NIVEL EXTERNO</h3>
+<p>
+Vistas de los usuarios y aplicaciones.
+Cada usuario puede observar solamente la información que necesita.
+</p>
+</div>
+
+<div class="arrow">↓</div>
+
+<div class="layer conceptual">
+<h3>🧠 NIVEL CONCEPTUAL</h3>
+<p>
+Describe la estructura lógica completa de la base de datos:
+entidades, relaciones, atributos y restricciones.
+</p>
+</div>
+
+<div class="arrow">↓</div>
+
+<div class="layer internal">
+<h3>💽 NIVEL INTERNO</h3>
+<p>
+Representa cómo se almacenan físicamente los datos,
+índices, archivos y estructuras de almacenamiento.
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- 4 EVOLUCION -->
+<section id="evolucion">
+
+<h2 class="section-title">
+4. <span>Desarrollo tecnológico de las BD</span>
+</h2>
+
+<p class="section-desc">
+Las bases de datos han evolucionado desde sistemas de archivos
+hasta plataformas distribuidas y servicios inteligentes en la nube.
+</p>
+
+<div class="timeline">
+
+<div class="event">
+<div class="year">1960s · Primeros SGBD</div>
+<p>
+Aparecen sistemas de gestión que permiten administrar
+grandes volúmenes de información de manera estructurada.
+</p>
+</div>
+
+<div class="event">
+<div class="year">1970s · Modelo Relacional</div>
+<p>
+El modelo relacional transforma la forma de organizar
+y consultar información mediante tablas y relaciones.
+</p>
+</div>
+
+<div class="event">
+<div class="year">1980s–1990s · SQL y SGBD comerciales</div>
+<p>
+Se consolidan sistemas como Oracle, SQL Server,
+MySQL y PostgreSQL.
+</p>
+</div>
+
+<div class="event">
+<div class="year">2000s · Web y grandes volúmenes</div>
+<p>
+El crecimiento de Internet exige mayor disponibilidad,
+rendimiento y escalabilidad.
+</p>
+</div>
+
+<div class="event">
+<div class="year">2010s · NoSQL y sistemas distribuidos</div>
+<p>
+Se expanden bases documentales, clave-valor, columnas
+y grafos para aplicaciones de gran escala.
+</p>
+</div>
+
+<div class="event">
+<div class="year">Actualidad · Nube + IA + Big Data</div>
+<p>
+Las bases modernas integran servicios cloud,
+analítica avanzada, datos masivos y tecnologías de IA.
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- 5 ENTORNOS -->
+<section>
+
+<h2 class="section-title">
+5. <span>Entornos actuales</span>
+</h2>
+
+<p class="section-desc">
+Las bases de datos actuales se integran con diferentes
+arquitecturas y tecnologías.
+</p>
+
+<div class="environment">
+
+<div>☁️ Computación en la nube</div>
+<div>🌐 Sistemas distribuidos</div>
+<div>📱 Aplicaciones móviles</div>
+<div>📈 Big Data</div>
+<div>🤖 Inteligencia Artificial</div>
+<div>⚡ Tiempo real</div>
+<div>🔒 Ciberseguridad</div>
+<div>🌍 Internet de las Cosas</div>
+
+</div>
+
+</section>
+
+
+🧠 <span>6. Evaluador interactivo</span>
+</h2>
+
+<div class="quiz">
+
+<div class="question">
+
+<h3>1. ¿Qué significa SGBD?</h3>
+
+<button onclick="respuesta(this,true)">
+A. Sistema de Gestión de Bases de Datos
+</button>
+
+<button onclick="respuesta(this,false)">
+B. Sistema General de Datos Digitales
+</button>
+
+<button onclick="respuesta(this,false)">
+C. Servicio Global de Base Digital
+</button>
+
+</div>
+
+
+<div class="question">
+
+<h3>2. ¿Cuál utiliza principalmente tablas?</h3>
+
+<button onclick="respuesta(this,true)">
+A. Base de datos relacional
+</button>
+
+<button onclick="respuesta(this,false)">
+B. Base de datos documental
+</button>
+
+<button onclick="respuesta(this,false)">
+C. Base de datos de grafos
+</button>
+
+</div>
+
+
+<div class="question">
+
+<h3>3. ¿Cuál es un ejemplo de NoSQL?</h3>
+
+<button onclick="respuesta(this,false)">
+A. MySQL
+</button>
+
+<button onclick="respuesta(this,true)">
+B. MongoDB
+</button>
+
+<button onclick="respuesta(this,false)">
+C. Oracle Database
+</button>
+
+</div>
+
+
+<div class="question">
+
+<h3>4. ¿Qué nivel representa el almacenamiento físico?</h3>
+
+<button onclick="respuesta(this,false)">
+A. Nivel externo
+</button>
+
+<button onclick="respuesta(this,false)">
+B. Nivel conceptual
+</button>
+
+<button onclick="respuesta(this,true)">
+C. Nivel interno
+</button>
+
+</div>
+
+<p id="resultado"></p>
+
+</div>
+
+</section>
+
+</main>
+
+
+<footer>
+
+<p>
+🗄️ <strong>Administración de Base de Datos · Semana 1</strong>
+</p>
+
+<p>
+Estudiante: <strong>Mecalith Huaranga</strong>
+</p>
+
+<p>
+Docente: <strong>Especialista en Tecnología. César Augusto Figueroa Condor</strong>
+</p>
+
+<br>
+
+<p>
+© 2026 · Organizador visual interactivo
+</p>
+
+</footer>
+
+
+<script>
+
+let puntos = 0;
+let respondidas = 0;
+
+function respuesta(boton, correcta){
+
+    // Evitar responder varias veces
+    if(boton.parentElement.dataset.respondido === "true"){
+        return;
+    }
+
+    boton.parentElement.dataset.respondido = "true";
+    respondidas++;
+
+    if(correcta){
+
+        boton.classList.add("correct");
+        puntos++;
+
+    }else{
+
+        boton.classList.add("wrong");
+
+    }
+
+    if(respondidas === 4){
+
+        document.getElementById("resultado").innerHTML =
+        "🎉 Resultado: " + puntos +
+        "/4 respuestas correctas. " +
+        (puntos >= 3
+        ? "¡Excelente trabajo, Mecalith!"
+        : "¡Repasa los conceptos y vuelve a intentarlo!");
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
