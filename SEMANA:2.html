@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Desarrollo de Base de Datos | Empresa de Servicios</title>
+<style>
+:root{
+  --bg:#07111f; --panel:#0d1b2d; --panel2:#10243c; --text:#eef6ff; --muted:#9fb2c9;
+  --primary:#4fd1c5; --secondary:#60a5fa; --accent:#a78bfa; --line:#203a55;
+  --shadow:0 18px 45px rgba(0,0,0,.28);
+}
+body.light{
+  --bg:#f4f8fc; --panel:#ffffff; --panel2:#edf5fb; --text:#122033; --muted:#52657a;
+  --line:#d9e5ef; --shadow:0 18px 45px rgba(31,65,90,.12);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text);transition:.3s}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:
+radial-gradient(circle at 15% 10%,rgba(79,209,197,.12),transparent 28%),
+radial-gradient(circle at 90% 25%,rgba(96,165,250,.11),transparent 28%)}
+nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(16px);background:color-mix(in srgb,var(--bg) 82%,transparent);border-bottom:1px solid var(--line)}
+.nav{max-width:1180px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;gap:15px}
+.brand{font-weight:800;letter-spacing:.3px}.brand span{color:var(--primary)}
+.links{display:flex;gap:8px;flex-wrap:wrap}.links a{color:var(--muted);text-decoration:none;padding:8px 11px;border-radius:10px;font-size:14px}
+.links a:hover{background:var(--panel);color:var(--text)}
+button{border:0;cursor:pointer}.theme{background:var(--panel);color:var(--text);padding:9px 12px;border-radius:12px;border:1px solid var(--line)}
+main{max-width:1180px;margin:auto;padding:0 20px 70px;position:relative}
+.hero{min-height:78vh;display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:42px;padding:70px 0}
+.badge{display:inline-flex;padding:8px 12px;border:1px solid rgba(79,209,197,.35);border-radius:999px;color:var(--primary);background:rgba(79,209,197,.08);font-size:13px;font-weight:700}
+h1{font-size:clamp(42px,6vw,74px);line-height:.98;margin:20px 0;background:linear-gradient(110deg,var(--text),var(--primary),var(--secondary));-webkit-background-clip:text;color:transparent}
+.hero p{color:var(--muted);font-size:18px;line-height:1.7;max-width:700px}
+.cta{display:flex;gap:12px;margin-top:25px;flex-wrap:wrap}.btn{padding:13px 18px;border-radius:13px;font-weight:700;text-decoration:none}
+.btn.primary{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#04111c}.btn.secondary{border:1px solid var(--line);color:var(--text);background:var(--panel)}
+.dbvisual{background:linear-gradient(145deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:28px;padding:28px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.cylinder{width:170px;height:105px;margin:30px auto;position:relative;background:linear-gradient(90deg,#256d7a,var(--primary),#256d7a);border-radius:50%/18%;box-shadow:0 0 40px rgba(79,209,197,.22)}
+.cylinder:before,.cylinder:after{content:"";position:absolute;left:0;width:100%;height:34px;border:2px solid rgba(255,255,255,.45);border-radius:50%}
+.cylinder:before{top:0}.cylinder:after{bottom:0}
+.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.metric{background:rgba(255,255,255,.04);border:1px solid var(--line);padding:14px;border-radius:15px;text-align:center}.metric b{display:block;color:var(--primary);font-size:20px}.metric small{color:var(--muted)}
+section{padding:65px 0}.eyebrow{color:var(--primary);font-size:13px;text-transform:uppercase;letter-spacing:2px;font-weight:800}.section-title{font-size:36px;margin:8px 0 12px}.section-desc{color:var(--muted);line-height:1.7;max-width:760px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}.card{background:linear-gradient(145deg,var(--panel),var(--panel2));border:1px solid var(--line);padding:23px;border-radius:20px;box-shadow:var(--shadow);transition:.25s}.card:hover{transform:translateY(-5px);border-color:var(--primary)}.icon{font-size:27px}.card h3{margin:14px 0 8px}.card p,.card li{color:var(--muted);line-height:1.6}.card ul{padding-left:20px}
+.tabs{margin-top:28px}.tab-buttons{display:flex;gap:10px;flex-wrap:wrap}.tabbtn{background:var(--panel);color:var(--muted);border:1px solid var(--line);padding:11px 16px;border-radius:12px}.tabbtn.active{background:var(--primary);color:#07111f;font-weight:800}.tab{display:none;margin-top:18px;background:var(--panel);border:1px solid var(--line);padding:25px;border-radius:20px}.tab.active{display:block}.tab p{color:var(--muted);line-height:1.7}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:13px;margin-top:32px}.step{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;text-align:center}.step .num{width:34px;height:34px;margin:0 auto 12px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#06121e;font-weight:900}.step p{font-size:13px;color:var(--muted)}
+.org{margin-top:35px;text-align:center}.node{display:inline-block;background:var(--panel);border:1px solid var(--line);padding:14px 18px;border-radius:14px;min-width:190px;box-shadow:var(--shadow)}.node.root{background:linear-gradient(135deg,rgba(79,209,197,.18),rgba(96,165,250,.15));border-color:var(--primary);font-weight:800}.connector{width:2px;height:28px;background:var(--line);margin:auto}.branches{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;position:relative}.branches:before{content:"";position:absolute;top:-14px;left:12.5%;right:12.5%;height:2px;background:var(--line)}.branch{position:relative}.branch:before{content:"";position:absolute;top:-14px;left:50%;height:14px;width:2px;background:var(--line)}.branch .node{width:100%;min-width:0}.branch small{display:block;color:var(--muted);margin-top:7px;line-height:1.4}
+.table-wrap{overflow:auto;margin-top:28px;border:1px solid var(--line);border-radius:18px}table{width:100%;border-collapse:collapse;min-width:700px;background:var(--panel)}th,td{padding:16px;text-align:left;border-bottom:1px solid var(--line)}th{color:var(--primary);background:var(--panel2)}td{color:var(--muted)}.check{color:var(--primary);font-weight:900}
+.accordion{margin-top:25px}.acc{border:1px solid var(--line);background:var(--panel);border-radius:15px;margin-bottom:10px;overflow:hidden}.acc-head{padding:17px 19px;display:flex;justify-content:space-between;cursor:pointer;font-weight:700}.acc-body{max-height:0;overflow:hidden;color:var(--muted);transition:max-height .3s ease}.acc-body div{padding:0 19px 18px;line-height:1.7}
+.conclusion{background:linear-gradient(135deg,rgba(79,209,197,.13),rgba(96,165,250,.13));border:1px solid var(--primary);border-radius:25px;padding:35px;margin-top:25px}.conclusion p{color:var(--muted);line-height:1.8}
+footer{text-align:center;color:var(--muted);padding:30px;border-top:1px solid var(--line)}
+.reveal{opacity:0;transform:translateY(20px);transition:.6s}.reveal.show{opacity:1;transform:none}
+@media(max-width:900px){.hero{grid-template-columns:1fr;min-height:auto}.grid{grid-template-columns:1fr 1fr}.flow{grid-template-columns:1fr 1fr}.branches{grid-template-columns:1fr 1fr}.branches:before,.branch:before{display:none}.links{display:none}}
+@media(max-width:600px){.grid,.flow,.branches{grid-template-columns:1fr}h1{font-size:44px}.section-title{font-size:30px}}
+</style>
+</head>
+<body>
+<nav>
+ <div class="nav">
+   <div class="brand">BD<span>•PRO</span></div>
+   <div class="links">
+    <a href="#objetivos">Objetivos</a><a href="#requerimientos">Requerimientos</a><a href="#herramientas">Herramientas</a><a href="#organizador">Organizador</a><a href="#conclusion">Conclusión</a>
+   </div>
+   <button class="theme" onclick="toggleTheme()">☀ / ☾</button>
+ </div>
+</nav>
+
+<main>
+<section class="hero">
+ <div>
+   <span class="badge">PROYECTO • ADMINISTRACIÓN DE BASE DE DATOS</span>
+   <h1>Base de Datos para una Empresa de Servicios</h1>
+   <div style="margin-top:22px;padding:18px 20px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.035);max-width:620px">
+     <div style="color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:1.5px">Presentado por</div>
+     <div style="font-size:19px;font-weight:800;margin-top:5px">Medalith Huaranga Ponce</div>
+     <div style="color:var(--muted);font-size:13px;margin-top:14px;text-transform:uppercase;letter-spacing:1.5px">Docente</div>
+     <div style="font-size:17px;font-weight:700;margin-top:5px">Cesar Augusto Figueroa Condor</div>
+   </div>
+   <p>Análisis profesional para gestionar clientes y procesos internos mediante una solución de base de datos segura, organizada, escalable y eficiente.</p>
+   <div class="cta"><a class="btn primary" href="#objetivos">Explorar proyecto ↓</a><a class="btn secondary" href="#organizador">Ver organizador visual</a></div>
+ </div>
+ <div class="dbvisual">
+   <div style="text-align:center"><span class="eyebrow">Arquitectura centralizada</span><h2>Gestión inteligente de datos</h2></div>
+   <div class="cylinder"></div>
+   <div class="metric-grid"><div class="metric"><b>24/7</b><small>Disponibilidad</small></div><div class="metric"><b>100%</b><small>Integridad</small></div><div class="metric"><b>SQL</b><small>Modelo relacional</small></div></div>
+ </div>
+</section>
+
+<section id="objetivos" class="reveal">
+ <span class="eyebrow">01 • Propósito</span><h2 class="section-title">Objetivos del desarrollo de la BD</h2>
+ <p class="section-desc">La base de datos debe responder directamente a las necesidades operativas de la empresa, convirtiendo la información en un recurso confiable para la atención al cliente y la gestión interna.</p>
+ <div class="grid">
+  <div class="card"><div class="icon">👥</div><h3>Centralizar clientes</h3><p>Registrar datos personales, contacto, historial de servicios, solicitudes y estado de cada cliente en un único sistema.</p></div>
+  <div class="card"><div class="icon">⚙️</div><h3>Optimizar procesos</h3><p>Reducir tareas repetitivas, agilizar consultas y mejorar el seguimiento de operaciones internas.</p></div>
+  <div class="card"><div class="icon">🛡️</div><h3>Proteger información</h3><p>Aplicar usuarios, roles, permisos, copias de seguridad y controles para evitar accesos no autorizados.</p></div>
+  <div class="card"><div class="icon">📊</div><h3>Facilitar decisiones</h3><p>Generar reportes confiables sobre clientes, servicios, pagos y rendimiento de los procesos.</p></div>
+  <div class="card"><div class="icon">🔗</div><h3>Evitar duplicidad</h3><p>Normalizar la información para reducir redundancia y mantener datos consistentes.</p></div>
+  <div class="card"><div class="icon">📈</div><h3>Permitir crecimiento</h3><p>Diseñar una estructura escalable que soporte nuevos clientes, servicios y módulos en el futuro.</p></div>
+ </div>
+</section>
+
+<section id="requerimientos" class="reveal">
+ <span class="eyebrow">02 • Análisis</span><h2 class="section-title">Requerimientos del sistema</h2>
+ <div class="tabs">
+  <div class="tab-buttons"><button class="tabbtn active" onclick="tab(0)">Funcionales</button><button class="tabbtn" onclick="tab(1)">No funcionales</button><button class="tabbtn" onclick="tab(2)">Entidades principales</button></div>
+  <div class="tab active"><h3>Requerimientos funcionales</h3><p>El sistema permitirá registrar, editar, consultar y eliminar clientes; administrar los servicios ofrecidos; registrar solicitudes; controlar pagos; asignar responsables; consultar estados de procesos y generar reportes administrativos.</p></div>
+  <div class="tab"><h3>Requerimientos no funcionales</h3><p>La solución deberá ofrecer seguridad, disponibilidad, buen tiempo de respuesta, facilidad de mantenimiento, respaldo periódico, recuperación ante fallos, escalabilidad y control de acceso según el rol del usuario.</p></div>
+  <div class="tab"><h3>Entidades propuestas</h3><p><strong>Clientes</strong>, <strong>Servicios</strong>, <strong>Solicitudes</strong>, <strong>Empleados</strong>, <strong>Pagos</strong>, <strong>Usuarios</strong> y <strong>Roles</strong>. Estas entidades se relacionan mediante claves primarias y foráneas para conservar la integridad referencial.</p></div>
+ </div>
+</section>
+
+<section class="reveal">
+ <span class="eyebrow">03 • Metodología</span><h2 class="section-title">Proceso de desarrollo</h2>
+ <div class="flow">
+  <div class="step"><div class="num">1</div><b>Análisis</b><p>Identificar necesidades y reglas del negocio.</p></div>
+  <div class="step"><div class="num">2</div><b>Diseño</b><p>Crear modelo conceptual y relaciones.</p></div>
+  <div class="step"><div class="num">3</div><b>Implementación</b><p>Crear tablas, claves y restricciones.</p></div>
+  <div class="step"><div class="num">4</div><b>Pruebas</b><p>Validar consultas, integridad y seguridad.</p></div>
+  <div class="step"><div class="num">5</div><b>Mantenimiento</b><p>Respaldar, optimizar y actualizar.</p></div>
+ </div>
+</section>
+
+<section id="herramientas" class="reveal">
+ <span class="eyebrow">04 • Tecnología</span><h2 class="section-title">Herramientas más adecuadas</h2>
+ <p class="section-desc">Para este escenario se recomienda un gestor relacional. La elección final dependerá del presupuesto, infraestructura, experiencia del equipo y nivel de crecimiento esperado.</p>
+ <div class="table-wrap"><table>
+ <thead><tr><th>Herramienta</th><th>Uso</th><th>Ventaja principal</th><th>Valoración</th></tr></thead>
+ <tbody>
+ <tr><td><strong>MySQL</strong></td><td>Motor de base de datos</td><td>Popular, eficiente y fácil de implementar</td><td class="check">★★★★★</td></tr>
+ <tr><td><strong>MySQL Workbench</strong></td><td>Diseño y administración</td><td>Modelado visual y consultas SQL</td><td class="check">★★★★★</td></tr>
+ <tr><td><strong>PostgreSQL</strong></td><td>Motor de base de datos</td><td>Robustez y funciones avanzadas</td><td class="check">★★★★★</td></tr>
+ <tr><td><strong>SQL Server</strong></td><td>Entorno empresarial</td><td>Integración con ecosistema Microsoft</td><td class="check">★★★★☆</td></tr>
+ <tr><td><strong>Draw.io</strong></td><td>Diagramación</td><td>Diseño del modelo entidad-relación</td><td class="check">★★★★☆</td></tr>
+ </tbody></table></div>
+</section>
+
+<section id="organizador" class="reveal">
+ <span class="eyebrow">05 • Organizador visual</span><h2 class="section-title">Mapa del análisis</h2>
+ <p class="section-desc">El organizador resume cómo los requerimientos de la empresa se transforman en objetivos, estructura, tecnología y controles.</p>
+ <div class="org">
+  <div class="node root">🗄️ DESARROLLO DE BASE DE DATOS</div><div class="connector"></div>
+  <div class="branches">
+   <div class="branch"><div class="node"><b>🎯 Objetivos</b><small>Centralizar • Optimizar • Consultar • Escalar</small></div></div>
+   <div class="branch"><div class="node"><b>📋 Requerimientos</b><small>Clientes • Servicios • Pagos • Procesos</small></div></div>
+   <div class="branch"><div class="node"><b>🛠️ Herramientas</b><small>MySQL • Workbench • PostgreSQL • SQL Server</small></div></div>
+   <div class="branch"><div class="node"><b>🔐 Seguridad</b><small>Roles • Permisos • Backup • Auditoría</small></div></div>
+  </div>
+ </div>
+</section>
+
+<section class="reveal">
+ <span class="eyebrow">06 • Seguridad</span><h2 class="section-title">Controles esenciales</h2>
+ <div class="accordion">
+  <div class="acc"><div class="acc-head" onclick="acc(this)">Control de acceso <span>＋</span></div><div class="acc-body"><div>Crear cuentas individuales y asignar privilegios según las responsabilidades de cada usuario. Se debe aplicar el principio de mínimo privilegio.</div></div></div>
+  <div class="acc"><div class="acc-head" onclick="acc(this)">Copias de seguridad <span>＋</span></div><div class="acc-body"><div>Programar respaldos periódicos y verificar su restauración para reducir el impacto de errores, fallos físicos o pérdida accidental de información.</div></div></div>
+  <div class="acc"><div class="acc-head" onclick="acc(this)">Integridad de datos <span>＋</span></div><div class="acc-body"><div>Utilizar claves primarias, claves foráneas, restricciones y validaciones para mantener datos correctos y relaciones consistentes.</div></div></div>
+ </div>
+</section>
+
+<section id="conclusion" class="reveal">
+ <span class="eyebrow">07 • Resultado</span><h2 class="section-title">Conclusión</h2>
+ <div class="conclusion"><p>El desarrollo de una base de datos para una empresa de servicios permite <strong>centralizar la información de clientes y procesos internos</strong>, mejorar la rapidez de las operaciones y disponer de datos confiables para la toma de decisiones. Un modelo relacional implementado con herramientas como <strong>MySQL y MySQL Workbench</strong> representa una alternativa adecuada por su facilidad de administración, rendimiento y capacidad de crecimiento. Además, la aplicación de controles de acceso, integridad y copias de seguridad garantiza una gestión más segura y profesional de la información empresarial.</p></div>
+</section>
+</main>
+
+<footer>Trabajo interactivo • Desarrollo de Base de Datos • 2026</footer>
+<script>
+function toggleTheme(){document.body.classList.toggle('light')}
+function tab(i){
+ document.querySelectorAll('.tabbtn').forEach((b,n)=>b.classList.toggle('active',n===i));
+ document.querySelectorAll('.tab').forEach((t,n)=>t.classList.toggle('active',n===i));
+}
+function acc(el){
+ const body=el.nextElementSibling, open=body.style.maxHeight;
+ document.querySelectorAll('.acc-body').forEach(x=>x.style.maxHeight=null);
+ document.querySelectorAll('.acc-head span').forEach(x=>x.textContent='＋');
+ if(!open){body.style.maxHeight=body.scrollHeight+'px';el.querySelector('span').textContent='−'}
+}
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(x=>obs.observe(x));
+</script>
+</body>
+</html>
